@@ -5,4 +5,4 @@ A barebones OS for a summer project
 >
 > This os needs to be compiled with a ix86-elf compiler
 
-[!image_of_os](https://i.imgur.com/jZLmmqv.png)
+![image_of_os](https://i.imgur.com/jZLmmqv.png)
