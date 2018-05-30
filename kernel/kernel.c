@@ -36,7 +36,7 @@ int kernel_entry(){
 	printf("> TODO: Implement Interrupt Descriptor Table\r\n");
 	printf("> TODO: Enable Long Mode\r\n");
 	printf("> TODO: Build a 64bit kernel\r\n");
-	printf("\r\nHello world :)")
+	printf("\r\nHello world :)");
 
 	write_status_bar(brand_string);
 
