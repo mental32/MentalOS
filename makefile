@@ -1,16 +1,18 @@
-GCCPARAMS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-LDPARAMS = -T kernel/linker.ld -o myos.bin -ffreestanding -O2 -nostdlib
+GCCPARAMS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra 
+LDPARAMS = -T kernel/boot/linker.ld -o myos.bin -ffreestanding -O2 -nostdlib
 
-objects = kernel.o terminal.o boot.o
+objects = kernel.o terminal.o boot.o input.o utils.o memory.o cpuid.o
 
-libcc = ./libc/terminal.c
-headers = ./libc/include/terminal.h
+boot = kernel/boot/32bit.s kernel/boot/64bit.s kernel/boot/multiboot.s
 
-kernel.o: $(kernel/%.c) $(libcc) $(headers)
-	i686-elf-gcc -c $(libcc) kernel/kernel.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+libcc = ./libc/terminal.c ./libc/input.c ./libc/utils.c ./libc/memory.c ./libc/cpuid.c
+headers = ./libc/include/terminal.h ./libc/include/input.h ./libc/include/memory.h ./libc/include/gnu_cpuid.h ./libc/include/cpuid.h
 
-boot.o: kernel/boot.s
-	i686-elf-as kernel/boot.s -o boot.o
+kernel.o: kernel/kernel.c $(libcc)
+	i686-elf-gcc -I ./libc/include/ -c $(libcc) kernel/kernel.c -$(GCCPARAMS)
+
+boot.o: $(boot)
+	i686-elf-as $(boot) -o boot.o
 
 bin: $(objects)
 	i686-elf-gcc $(LDPARAMS)  $(objects) -lgcc

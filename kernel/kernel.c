@@ -2,7 +2,10 @@
 #include <stddef.h>
 #include <stdint.h>
  
-#include "../libc/include/terminal.h"
+#include "terminal.h"
+#include "input.h"
+#include "utils.h"
+#include "cpuid.h"
 
 /* Check if the compiler thinks we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -14,12 +17,27 @@
 #error "This os needs to be compiled with a ix86-elf compiler"
 #endif
 
-void kernel_main(void) 
-{
+int kernel_entry(){
 	/* Initialize terminal interface */
 	_VGA_TERM_INIT();
- 
-	/* Newline support is left as an exercise. */
-	set_terminal_color(VGA_COLOR_LIGHT_GREEN, VGA_COLOR_BLACK);
-	printf("Hello, kernel World!\r\nWelcome to MentalOS\r\n");
+
+	char* vendor[12];
+	char* brand_string[12 * 4];
+
+	cpuid_get_vendor(vendor);
+	cpuid_get_brand(brand_string);
+
+
+	printf("< MentalOS >\r\n\n");
+	printf("> TODO: Setup PS/2 Keyboard driver\r\n");
+	printf("> TODO: Setup memory Paging (Legacy Non-PSE Non-PAE)\r\n");
+	printf("> TODO: Setup memory Paging (PAE)\r\n");
+	printf("> TODO: Implement Global Descriptor Table\r\n");
+	printf("> TODO: Implement Interrupt Descriptor Table\r\n");
+	printf("> TODO: Enable Long Mode\r\n");
+	printf("> TODO: Build a 64bit kernel\r\n");
+
+	write_status_bar(brand_string);
+
+	return 0;
 }
