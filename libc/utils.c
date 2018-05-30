@@ -18,6 +18,13 @@ char* reverse_string(char *str, size_t len) {
     return str;
 }
 
+size_t strlen(const char* str){
+    size_t len = 0;
+    while (str[len])
+        len++;
+    return len;
+}
+
 char* strconcat(char* a, char* b){
     int i=strlen(a), j=0;
 

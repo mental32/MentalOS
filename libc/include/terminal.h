@@ -1,6 +1,12 @@
+void _VGA_TERM_INIT(void);
+void _show_vga_logo(void);
+
 void printf(const char* data, ...);
 void put_char(char c);
-void _VGA_TERM_INIT(void);
+
+
+void fill_screen(const char data);
+void write_status_bar(char* data);
 
 size_t terminal_row;
 size_t terminal_column;
@@ -28,7 +34,6 @@ enum vga_color {
 
 uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg);
 uint16_t vga_entry(unsigned char uc, uint8_t color);
+
 void set_terminal_color(enum vga_color fg, enum vga_color bg);
-void fill_screen(const char data);
-void _show_vga_logo(void);
-size_t strlen(const char* str);
+void move_cursor(unsigned short pos);

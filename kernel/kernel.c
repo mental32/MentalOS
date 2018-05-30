@@ -3,9 +3,10 @@
 #include <stdint.h>
  
 #include "terminal.h"
-#include "input.h"
 #include "utils.h"
 #include "cpuid.h"
+
+#define print printf
 
 /* Check if the compiler thinks we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -27,8 +28,7 @@ int kernel_entry(){
 	cpuid_get_vendor(vendor);
 	cpuid_get_brand(brand_string);
 
-
-	printf("< MentalOS >\r\n\n");
+	printf("< MentalOS >\r\n\r\n");
 	printf("> TODO: Setup PS/2 Keyboard driver\r\n");
 	printf("> TODO: Setup memory Paging (Legacy Non-PSE Non-PAE)\r\n");
 	printf("> TODO: Setup memory Paging (PAE)\r\n");
@@ -36,6 +36,7 @@ int kernel_entry(){
 	printf("> TODO: Implement Interrupt Descriptor Table\r\n");
 	printf("> TODO: Enable Long Mode\r\n");
 	printf("> TODO: Build a 64bit kernel\r\n");
+	printf("\r\nHello world :)")
 
 	write_status_bar(brand_string);
 

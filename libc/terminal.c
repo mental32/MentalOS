@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "include/terminal.h"
+#include "include/port.h"
 
 inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg){
 	return fg | bg << 4;
@@ -10,14 +11,6 @@ inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg){
 
 inline uint16_t vga_entry(unsigned char uc, uint8_t color){
 	return (uint16_t) uc | (uint16_t) color << 8;
-}
- 
-size_t strlen(const char* str) 
-{
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
 }
 
 static const size_t VGA_WIDTH = 80;
@@ -30,6 +23,21 @@ uint16_t* terminal_buffer;
 
 inline void set_terminal_color(enum vga_color fg, enum vga_color bg){
 	terminal_color = fg | bg << 4;
+}
+
+void move_cursor(unsigned short pos){
+	outb(0x3d4, 14);
+	outb(0x3d5, ((pos >> 8) & 0x00ff));
+	outb(0x3d4, 15);
+	outb(0x3d5, pos & 0x00ff);
+}
+
+void auto_move_cursor(){
+	unsigned short pos = 0;
+	pos = pos + terminal_row * 80;
+	pos = pos + terminal_column;
+
+	move_cursor(pos);
 }
 
 void _VGA_TERM_INIT(void) 
@@ -71,6 +79,7 @@ void put_char(char c){
 				terminal_row = 0;
 		}
 	}
+	auto_move_cursor();
 }
 
 void printf(const char* data, ...){
@@ -109,4 +118,5 @@ void write_status_bar(char* data){
 
 	terminal_row = _oldy;
 	terminal_column = _oldx;
+	auto_move_cursor();
 }
