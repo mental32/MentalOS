@@ -6,7 +6,7 @@
 .section .text
 
 start_32:
-	mov $stack_top, %eax
+	mov $stack_top, %esp
 
 	lgdt (gdt_descriptor)
 
