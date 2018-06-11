@@ -4,6 +4,7 @@
 
 #include "include/terminal.h"
 #include "include/port.h"
+#include "include/utils.h"
 
 inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg){
 	return fg | bg << 4;
@@ -83,8 +84,19 @@ void put_char(char c){
 }
 
 void printf(const char* data, ...){
-	for (size_t i = 0; i < strlen(data); i++)
+	for (int i = 0; i < strlen(data); i++)
 		put_char(data[i]);
+}
+
+void printf_colour(const char* data, uint8_t colour){
+	uint8_t old_colour = terminal_color; // save old terminal colour
+	terminal_color = colour;             // use new colour
+
+	for (int i = 0; i < strlen(data); i++){
+		put_char(data[i]);
+	}
+
+	terminal_color = old_colour;        // return previous colour
 }
 
 void fill_screen(char data){

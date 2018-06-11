@@ -2,6 +2,7 @@ void _VGA_TERM_INIT(void);
 void _show_vga_logo(void);
 
 void printf(const char* data, ...);
+void printf_colour(const char* data, uint8_t colour);
 void put_char(char c);
 
 

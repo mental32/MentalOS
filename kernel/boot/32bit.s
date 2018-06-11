@@ -6,22 +6,42 @@
 .section .text
 
 start_32:
-	mov $stack_top, %esp
+	mov $stack_top, %eax
+
+	lgdt (gdt_descriptor)
 
 	call start_64
-
-	/*
-	Place the system into an infinite loop.
-	1) Disable interrupts with cli
-	2) Wait for next interrupt to arrive with hlt
-	3) Jump to hlt if it ever wakes due to a non-maskable interrupt occuring or due to system managment mode.
-	*/
-	cli
-1:	hlt
-	jmp 1b
 
 .section .bss
 .align 16
 stack_bottom:
 .skip 16384 # 16 KiB
 stack_top:
+
+.section .data
+
+gdt_start:
+	.long 0x0
+	.long 0x0
+
+gdt_code:
+	.word 0xffff
+	.word 0x0
+	.byte 0x0
+	.byte 0x9A
+	.byte 0xCF
+	.byte 0x0
+
+gdt_data:
+	.word 0xffff
+	.word 0x0
+	.byte 0x0
+	.byte 0x92
+	.byte 0xCF
+	.byte 0x0
+
+gdt_end:
+
+gdt_descriptor:
+	.word gdt_end - gdt_start - 1
+	.long gdt_start

@@ -1,5 +1,4 @@
 /* x86 64-bit boot code */
-
 .global start_64
 
 .section .text

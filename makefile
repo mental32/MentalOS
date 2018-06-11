@@ -4,9 +4,10 @@ LDPARAMS = -T kernel/boot/linker.ld -o myos.bin -ffreestanding -O2 -nostdlib
 objects = kernel.o terminal.o boot.o utils.o memory.o cpuid.o
 
 boot = kernel/boot/32bit.s kernel/boot/64bit.s kernel/boot/multiboot.s
-
-libcc = ./libc/terminal.c ./libc/utils.c ./libc/memory.c ./libc/cpuid.c
-headers = ./libc/include/terminal.h ./libc/include/port.h ./libc/include/memory.h ./libc/include/gnu_cpuid.h ./libc/include/cpuid.h
+libcc = ./libc/terminal.c \
+		./libc/utils.c \
+		./libc/memory.c \
+		./libc/cpuid.c
 
 kernel.o: kernel/kernel.c $(libcc)
 	i686-elf-gcc -I ./libc/include/ -c $(libcc) kernel/kernel.c -$(GCCPARAMS)
@@ -31,3 +32,6 @@ iso: bin
 run: iso
 	(killall VirtualBox && sleep 1) || true
 	VirtualBox --startvm 'myos' &
+
+clean:
+	rm *.o
