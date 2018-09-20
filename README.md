@@ -1,3 +1,5 @@
+> This project is now archived
+
 # MentalOS
 A barebones OS for a summer project
 
